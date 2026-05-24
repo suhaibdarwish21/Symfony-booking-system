@@ -1,0 +1,567 @@
+<nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+
+    <div class="container">
+
+        <!-- LOGO -->
+        <a class="navbar-brand d-flex align-items-center"
+           href="{% if is_granted('ROLE_ADMIN') %}/admin{% else %}{{ path('app_home') }}{% endif %}">
+
+            <div class="logo-wrapper">
+
+                <img src="{{ asset('uploads/services/logo/autocare-logo.png') }}"
+                     alt="AutoCare Logo"
+                     class="navbar-logo">
+
+            </div>
+
+            <div class="logo-text">
+
+                <span class="logo-title">
+                    AutoCare
+                </span>
+
+                <span class="logo-subtitle">
+                    PREMIUM DETAILING
+                </span>
+
+            </div>
+
+        </a>
+
+        <!-- MOBILE BUTTON -->
+        <button class="navbar-toggler border-0 shadow-none"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarContent">
+
+            <i class="fas fa-bars"></i>
+
+        </button>
+
+        <!-- NAVIGATION -->
+        <div class="collapse navbar-collapse"
+             id="navbarContent">
+
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                {% if is_granted('ROLE_ADMIN') %}
+
+                    <!-- DASHBOARD -->
+                    <li class="nav-item">
+
+                        <a class="nav-link nav-custom-link"
+                           href="/admin">
+
+                            <i class="fas fa-chart-line"></i>
+
+                            Dashboard
+
+                        </a>
+
+                    </li>
+
+                    <!-- USERS -->
+                    <li class="nav-item">
+
+                        <a class="nav-link nav-custom-link"
+                           href="/admin/user">
+
+                            <i class="fas fa-users"></i>
+
+                            Users
+
+                        </a>
+
+                    </li>
+
+                    <!-- SERVICES -->
+                    <li class="nav-item">
+
+                        <a class="nav-link nav-custom-link"
+                           href="/admin/service">
+
+                            <i class="fas fa-car-side"></i>
+
+                            Services
+
+                        </a>
+
+                    </li>
+
+                    <!-- BOOKINGS -->
+                    <li class="nav-item">
+
+                        <a class="nav-link nav-custom-link"
+                           href="/admin/booking">
+
+                            <i class="fas fa-calendar-check"></i>
+
+                            Bookings
+
+                        </a>
+
+                    </li>
+
+                    <!-- TIME SLOTS -->
+                    <li class="nav-item">
+
+                        <a class="nav-link nav-custom-link"
+                           href="/admin/time-slot">
+
+                            <i class="fas fa-clock"></i>
+
+                            Time Slots
+
+                        </a>
+
+                    </li>
+
+                    <!-- LOGOUT -->
+                    <li class="nav-item ms-lg-3">
+
+                        <a class="logout-btn"
+                           href="{{ path('app_logout') }}">
+
+                            <i class="fas fa-right-from-bracket"></i>
+
+                            Logout
+
+                        </a>
+
+                    </li>
+
+                {% else %}
+
+                    <!-- HOME -->
+                    <li class="nav-item">
+
+                        <a class="nav-link nav-custom-link {% if app.request.get('_route') == 'app_home' %}active-nav{% endif %}"
+                           href="{{ path('app_home') }}">
+
+                            <i class="fas fa-house"></i>
+
+                            Home
+
+                        </a>
+
+                    </li>
+
+                    <!-- ABOUT -->
+                    <li class="nav-item">
+
+                        <a class="nav-link nav-custom-link {% if app.request.get('_route') == 'app_home_about' %}active-nav{% endif %}"
+                           href="{{ path('app_home_about') }}">
+
+                            <i class="fas fa-circle-info"></i>
+
+                            About
+
+                        </a>
+
+                    </li>
+
+                    <!-- SERVICES -->
+                    <li class="nav-item">
+
+                        <a class="nav-link nav-custom-link {% if app.request.get('_route') == 'app_services' %}active-nav{% endif %}"
+                           href="{{ path('app_services') }}">
+
+                            <i class="fas fa-car-side"></i>
+
+                            Services
+
+                        </a>
+
+                    </li>
+
+                    {% if app.user %}
+
+                        <!-- BOOKINGS -->
+                        <li class="nav-item">
+
+                            <a class="nav-link nav-custom-link {% if app.request.get('_route') == 'app_profile_bookings' %}active-nav{% endif %}"
+                               href="{{ path('app_profile_bookings') }}">
+
+                                <i class="fas fa-calendar-check"></i>
+
+                                Buchungen
+
+                            </a>
+
+                        </a>
+
+                    </li>
+
+                    <!-- LOGOUT -->
+                    <li class="nav-item ms-lg-3">
+
+                        <a class="logout-btn"
+                           href="{{ path('app_logout') }}">
+
+                            <i class="fas fa-right-from-bracket"></i>
+
+                            Logout
+
+                        </a>
+
+                    </li>
+
+                    {% else %}
+
+                    <!-- LOGIN -->
+                    <li class="nav-item ms-lg-3">
+
+                        <a class="login-btn"
+                           href="{{ path('app_login') }}">
+
+                            <i class="fas fa-right-to-bracket"></i>
+
+                            Login
+
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<style>
+
+/* NAVBAR */
+
+.custom-navbar{
+
+    background: rgba(255,255,255,0.88);
+
+    backdrop-filter: blur(18px);
+
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+
+    padding: 10px 0;
+
+    transition: 0.3s ease;
+
+    z-index: 999;
+}
+
+/* LOGO */
+
+.navbar-brand{
+
+    text-decoration: none;
+
+    gap: 14px;
+}
+
+.logo-wrapper{
+
+    width: 58px;
+
+    height: 58px;
+
+    border-radius: 18px;
+
+    background: linear-gradient(
+        135deg,
+        #eff6ff,
+        #dbeafe
+    );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 8px 25px rgba(37,99,235,0.12);
+
+    transition: 0.3s ease;
+}
+
+.logo-wrapper:hover{
+
+    transform: translateY(-2px);
+}
+
+.navbar-logo{
+
+    width: 42px;
+
+    height: 42px;
+
+    object-fit: contain;
+}
+
+.logo-text{
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.logo-title{
+
+    font-size: 2rem;
+
+    font-weight: 900;
+
+    color: #0f172a;
+
+    line-height: 1;
+
+    letter-spacing: -1px;
+}
+
+.logo-subtitle{
+
+    font-size: 0.68rem;
+
+    font-weight: 800;
+
+    letter-spacing: 3px;
+
+    color: #64748b;
+
+    margin-top: 4px;
+}
+
+/* NAV LINKS */
+
+.navbar-nav{
+
+    gap: 8px;
+}
+
+.nav-custom-link{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #0f172a !important;
+
+    font-weight: 700;
+
+    font-size: 0.95rem;
+
+    padding: 11px 18px !important;
+
+    border-radius: 14px;
+
+    transition: all 0.25s ease;
+}
+
+.nav-custom-link i{
+
+    color: #2563eb;
+
+    transition: 0.25s ease;
+}
+
+.nav-custom-link:hover{
+
+    background: #f1f5f9;
+
+    color: #2563eb !important;
+
+    transform: translateY(-2px);
+}
+
+.nav-custom-link:hover i{
+
+    transform: scale(1.1);
+}
+
+/* ACTIVE */
+
+.active-nav{
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color: white !important;
+
+    box-shadow:
+        0 10px 25px rgba(37,99,235,0.22);
+}
+
+.active-nav i{
+
+    color: white !important;
+}
+
+/* LOGIN */
+
+.login-btn{
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color: white !important;
+
+    text-decoration: none;
+
+    padding: 12px 22px;
+
+    border-radius: 14px;
+
+    font-weight: 800;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    transition: 0.3s ease;
+
+    box-shadow:
+        0 10px 25px rgba(37,99,235,0.25);
+}
+
+.login-btn:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 15px 35px rgba(37,99,235,0.32);
+}
+
+/* LOGOUT */
+
+.logout-btn{
+
+    background: linear-gradient(
+        135deg,
+        #ef4444,
+        #dc2626
+    );
+
+    color: white !important;
+
+    text-decoration: none;
+
+    padding: 12px 22px;
+
+    border-radius: 14px;
+
+    font-weight: 800;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    transition: 0.3s ease;
+
+    box-shadow:
+        0 10px 25px rgba(239,68,68,0.22);
+}
+
+.logout-btn:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 15px 35px rgba(239,68,68,0.3);
+}
+
+/* TOGGLER */
+
+.navbar-toggler{
+
+    font-size: 1.4rem;
+
+    color: #2563eb;
+}
+
+/* MOBILE */
+
+@media (max-width: 991px){
+
+    .custom-navbar{
+
+        padding: 12px 0;
+    }
+
+    .navbar-collapse{
+
+        margin-top: 18px;
+
+        background: white;
+
+        border-radius: 22px;
+
+        padding: 22px;
+
+        box-shadow:
+            0 20px 45px rgba(15,23,42,0.08);
+    }
+
+    .navbar-nav{
+
+        gap: 14px;
+    }
+
+    .nav-custom-link{
+
+        justify-content: center;
+
+        width: 100%;
+    }
+
+    .login-btn,
+    .logout-btn{
+
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    .logo-title{
+
+        font-size: 1.5rem;
+    }
+
+    .logo-subtitle{
+
+        font-size: 0.55rem;
+
+        letter-spacing: 2px;
+    }
+
+    .logo-wrapper{
+
+        width: 50px;
+
+        height: 50px;
+    }
+
+    .navbar-logo{
+
+        width: 34px;
+
+        height: 34px;
+    }
+}
+
+</style>

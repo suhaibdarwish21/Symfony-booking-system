@@ -1,0 +1,984 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+<!-- HERO -->
+<section class="hero-section">
+
+    <div class="hero-container">
+
+        <div class="hero-grid">
+
+            <!-- LEFT -->
+            <div class="hero-left">
+
+                <span class="hero-badge">
+
+                    ✨ Premium Car Detailing
+
+                </span>
+
+                <h1 class="hero-title">
+
+                    Premium Pflege <br>
+
+                    für dein
+
+                    <span>Fahrzeug</span>
+
+                </h1>
+
+                <p class="hero-text">
+
+                    Professionelle Fahrzeugpflege,
+                    Innenreinigung und Premium Detailing
+                    für perfekten Glanz und maximalen Schutz.
+
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="{{ path('app_services') }}"
+                       class="hero-btn-primary">
+
+                        <i class="fas fa-car me-2"></i>
+
+                        Services ansehen
+
+                    </a>
+
+                    <a href="#services"
+                       class="hero-btn-secondary">
+
+                        <i class="fas fa-arrow-down"></i>
+
+                    </a>
+
+                    <span class="hero-small-text">
+
+                        Mehr entdecken
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="hero-right">
+
+                <div class="hero-image-wrapper">
+
+                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1800&auto=format&fit=crop"
+                         class="hero-image"
+                         alt="Car Detailing">
+
+                    <!-- CARD -->
+                    <div class="floating-card card-one">
+
+                        <i class="fas fa-soap"></i>
+
+                        <h5>Premium Reinigung</h5>
+
+                        <p>
+
+                            Professionelle Pflege
+                            für dein Fahrzeug
+
+                        </p>
+
+                    </div>
+
+                    <!-- CARD -->
+                    <div class="floating-card card-two">
+
+                        <i class="fas fa-shield-alt"></i>
+
+                        <h5>Lackschutz</h5>
+
+                        <p>
+
+                            Maximaler Schutz
+                            und Hochglanz Finish
+
+                        </p>
+
+                    </div>
+
+                    <!-- CARD -->
+                    <div class="floating-card card-three">
+
+                        <i class="fas fa-clock"></i>
+
+                        <h5>Schnelle Termine</h5>
+
+                        <p>
+
+                            Flexible Online Buchung
+                            rund um die Uhr
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+
+    <div class="hero-container">
+
+        <!-- TOP -->
+        <div class="services-top">
+
+            <div>
+
+                <span class="section-mini-title">
+
+                    PREMIUM SERVICES
+
+                </span>
+
+                <h2 class="services-title">
+
+                    Premium Fahrzeugpflege
+
+                </h2>
+
+                <p class="services-text">
+
+                    Entdecke unsere beliebtesten
+                    Services für dein Fahrzeug.
+
+                </p>
+
+            </div>
+
+            <a href="{{ path('app_services') }}"
+               class="all-services-btn">
+
+                Alle Services
+
+                <i class="fas fa-arrow-right ms-2"></i>
+
+            </a>
+
+        </div>
+
+        <!-- SERVICES -->
+        <div class="row g-4">
+
+            {% for service in services|slice(0, 3) %}
+
+                <div class="col-md-6 col-xl-4">
+
+                    <div class="service-card">
+
+                        <!-- IMAGE -->
+                        <div class="service-image-wrapper">
+
+                            {% if service.imageName %}
+
+                                <img
+                                    src="{{ asset('uploads/services/' ~ service.imageName) }}"
+                                    class="service-image-card"
+                                    alt="{{ service.name }}"
+                                >
+
+                            {% else %}
+
+                                <div class="service-placeholder">
+
+                                    <i class="fas fa-image"></i>
+
+                                </div>
+
+                            {% endif %}
+
+                            <!-- HEART -->
+                            <button class="heart-btn">
+
+                                <i class="far fa-heart"></i>
+
+                            </button>
+
+                        </div>
+
+                        <!-- CONTENT -->
+                        <div class="service-content">
+
+                            <!-- TITLE -->
+                            <div class="service-top-box">
+
+                                <h3 class="service-title-card">
+
+                                    {{ service.name }}
+
+                                </h3>
+
+                                <div class="service-price">
+
+                                    {{ service.price|number_format(0, '.', '.') }} €
+
+                                </div>
+
+                            </div>
+
+                            <!-- DESCRIPTION -->
+                            <p class="service-description">
+
+                                {{ service.description|slice(0, 110) }}
+
+                                {% if service.description|length > 110 %}
+                                    ...
+                                {% endif %}
+
+                            </p>
+
+                            <!-- INFO -->
+                            <div class="service-info">
+
+                                <div class="info-badge">
+
+                                    <i class="fas fa-clock"></i>
+
+                                    {{ service.durationMinutes }} Min
+
+                                </div>
+
+                                <div class="info-badge">
+
+                                    <i class="fas fa-calendar"></i>
+
+                                    {{ service.timeSlots|length }} Zeiten
+
+                                </div>
+
+                            </div>
+
+                            <!-- BUTTON -->
+                            <a href="{{ path('app_service_show', {id: service.id}) }}"
+                               class="service-btn">
+
+                                <i class="fas fa-search me-2"></i>
+
+                                Details & Buchen
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+
+    <div class="hero-container">
+
+        <div class="features-grid">
+
+            <!-- ITEM -->
+            <div class="feature-box">
+
+                <div class="feature-icon">
+
+                    <i class="fas fa-gem"></i>
+
+                </div>
+
+                <h3>
+
+                    Premium Produkte
+
+                </h3>
+
+                <p>
+
+                    Nur hochwertige
+                    Pflegeprodukte im Einsatz.
+
+                </p>
+
+            </div>
+
+            <!-- ITEM -->
+            <div class="feature-box">
+
+                <div class="feature-icon">
+
+                    <i class="fas fa-bolt"></i>
+
+                </div>
+
+                <h3>
+
+                    Schneller Service
+
+                </h3>
+
+                <p>
+
+                    Professionelle Ergebnisse
+                    ohne lange Wartezeiten.
+
+                </p>
+
+            </div>
+
+            <!-- ITEM -->
+            <div class="feature-box">
+
+                <div class="feature-icon">
+
+                    <i class="fas fa-users"></i>
+
+                </div>
+
+                <h3>
+
+                    Erfahrenes Team
+
+                </h3>
+
+                <p>
+
+                    Professionelle Fahrzeugpflege
+                    mit Liebe zum Detail.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+
+/* GLOBAL */
+
+body{
+    background:#f7f9fc;
+    overflow-x:hidden;
+}
+
+/* HERO */
+
+.hero-section{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding-top:120px;
+    padding-bottom:100px;
+}
+
+.hero-container{
+    width:100%;
+    max-width:1600px;
+    margin:auto;
+    padding-left:70px;
+    padding-right:70px;
+}
+
+/* GRID */
+
+.hero-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    align-items:center;
+    gap:100px;
+}
+
+/* LEFT */
+
+.hero-badge{
+    background:#edf3ff;
+    color:#2563eb;
+
+    padding:14px 24px;
+
+    border-radius:50px;
+
+    font-size:15px;
+    font-weight:700;
+}
+
+.hero-title{
+    font-size:88px;
+    line-height:1;
+    font-weight:800;
+
+    color:#0f172a;
+
+    margin-top:35px;
+    margin-bottom:35px;
+}
+
+.hero-title span{
+    color:#2563eb;
+}
+
+.hero-text{
+    font-size:24px;
+    line-height:1.8;
+
+    color:#64748b;
+
+    max-width:700px;
+}
+
+/* BUTTONS */
+
+.hero-buttons{
+    display:flex;
+    align-items:center;
+    gap:22px;
+
+    margin-top:50px;
+
+    flex-wrap:wrap;
+}
+
+.hero-btn-primary{
+    background:#2563eb;
+    color:white;
+
+    padding:22px 38px;
+
+    border-radius:20px;
+
+    font-size:18px;
+    font-weight:700;
+
+    transition:0.3s;
+
+    text-decoration:none;
+}
+
+.hero-btn-primary:hover{
+    background:#1d4ed8;
+    color:white;
+
+    transform:translateY(-3px);
+}
+
+.hero-btn-secondary{
+    width:70px;
+    height:70px;
+
+    border-radius:50%;
+
+    background:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#2563eb;
+
+    text-decoration:none;
+
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+}
+
+.hero-small-text{
+    font-size:18px;
+    font-weight:700;
+
+    color:#0f172a;
+}
+
+/* IMAGE */
+
+.hero-right{
+    display:flex;
+    justify-content:center;
+}
+
+.hero-image-wrapper{
+    position:relative;
+    width:100%;
+    max-width:700px;
+}
+
+.hero-image{
+    width:100%;
+    height:700px;
+
+    object-fit:cover;
+
+    border-radius:45px;
+}
+
+/* FLOATING */
+
+.floating-card{
+    position:absolute;
+
+    background:white;
+
+    border-radius:30px;
+
+    padding:28px;
+
+    width:240px;
+
+    box-shadow:0 20px 50px rgba(0,0,0,0.08);
+}
+
+.floating-card i{
+    font-size:30px;
+    color:#2563eb;
+
+    margin-bottom:18px;
+}
+
+.floating-card h5{
+    font-size:26px;
+    font-weight:800;
+
+    color:#0f172a;
+
+    margin-bottom:12px;
+}
+
+.floating-card p{
+    color:#64748b;
+    line-height:1.7;
+
+    margin:0;
+}
+
+.card-one{
+    top:40px;
+    left:-80px;
+}
+
+.card-two{
+    top:170px;
+    right:-80px;
+}
+
+.card-three{
+    bottom:40px;
+    left:-70px;
+}
+
+/* SERVICES */
+
+.services-section{
+    padding:120px 0;
+}
+
+.services-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+
+    gap:30px;
+
+    margin-bottom:70px;
+
+    flex-wrap:wrap;
+}
+
+.section-mini-title{
+    background:#edf3ff;
+    color:#2563eb;
+
+    padding:12px 22px;
+
+    border-radius:50px;
+
+    font-size:15px;
+    font-weight:700;
+}
+
+.services-title{
+    font-size:64px;
+    font-weight:800;
+
+    color:#0f172a;
+
+    margin-top:24px;
+}
+
+.services-text{
+    color:#64748b;
+
+    font-size:22px;
+
+    margin-top:16px;
+}
+
+.all-services-btn{
+    background:white;
+
+    padding:20px 30px;
+
+    border-radius:20px;
+
+    color:#2563eb;
+
+    font-weight:700;
+
+    text-decoration:none;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+}
+
+/* CARD */
+
+.service-card{
+    background:white;
+
+    border-radius:35px;
+
+    overflow:hidden;
+
+    height:100%;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+
+    transition:0.4s;
+}
+
+.service-card:hover{
+    transform:translateY(-10px);
+}
+
+.service-image-wrapper{
+    position:relative;
+}
+
+.service-image-card{
+    width:100%;
+    height:320px;
+
+    object-fit:cover;
+}
+
+.service-placeholder{
+    height:320px;
+
+    background:#eef2ff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.service-placeholder i{
+    font-size:70px;
+    color:#94a3b8;
+}
+
+.heart-btn{
+    position:absolute;
+    top:25px;
+    right:25px;
+
+    width:65px;
+    height:65px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:white;
+
+    font-size:22px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* CONTENT */
+
+.service-content{
+    padding:35px;
+
+    display:flex;
+    flex-direction:column;
+
+    height:100%;
+}
+
+.service-top-box{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+
+    gap:20px;
+
+    margin-bottom:20px;
+
+    min-height:120px;
+}
+
+.service-title-card{
+    font-size:32px;
+    font-weight:800;
+
+    color:#0f172a;
+
+    line-height:1.2;
+
+    flex:1;
+
+    word-break:break-word;
+}
+
+.service-price{
+    font-size:32px;
+    font-weight:800;
+
+    color:#2563eb;
+
+    min-width:120px;
+
+    text-align:right;
+
+    flex-shrink:0;
+}
+
+.service-description{
+    color:#64748b;
+
+    line-height:1.9;
+
+    font-size:18px;
+
+    min-height:130px;
+
+    margin-bottom:30px;
+}
+
+/* INFO */
+
+.service-info{
+    display:flex;
+    gap:15px;
+
+    flex-wrap:wrap;
+
+    margin-top:auto;
+    margin-bottom:30px;
+}
+
+.info-badge{
+    background:#f3f6fb;
+
+    padding:14px 20px;
+
+    border-radius:16px;
+
+    font-weight:700;
+}
+
+.info-badge i{
+    color:#2563eb;
+    margin-right:8px;
+}
+
+/* BUTTON */
+
+.service-btn{
+    width:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#2563eb;
+    color:white;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    font-size:18px;
+    font-weight:700;
+
+    transition:0.3s;
+
+    text-decoration:none;
+}
+
+.service-btn:hover{
+    background:#1d4ed8;
+    color:white;
+}
+
+/* FEATURES */
+
+.features-section{
+    padding-bottom:120px;
+}
+
+.features-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:35px;
+}
+
+.feature-box{
+    background:white;
+
+    border-radius:35px;
+
+    padding:50px;
+
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.feature-icon{
+    width:90px;
+    height:90px;
+
+    border-radius:24px;
+
+    background:#edf3ff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#2563eb;
+
+    font-size:34px;
+
+    margin:auto auto 35px;
+}
+
+.feature-box h3{
+    font-size:30px;
+    font-weight:800;
+
+    margin-bottom:20px;
+
+    color:#0f172a;
+}
+
+.feature-box p{
+    color:#64748b;
+
+    line-height:1.9;
+
+    font-size:18px;
+}
+
+/* TABLET */
+
+@media(max-width:1200px){
+
+    .hero-grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero-title{
+        font-size:70px;
+    }
+
+}
+
+/* MOBILE */
+
+@media(max-width:991px){
+
+    .hero-container{
+        padding-left:20px;
+        padding-right:20px;
+    }
+
+    .hero-section{
+        padding-top:100px;
+    }
+
+    .hero-title{
+        font-size:48px;
+    }
+
+    .hero-text{
+        font-size:18px;
+    }
+
+    .hero-image{
+        height:450px;
+    }
+
+    .floating-card{
+        display:none;
+    }
+
+    .services-title{
+        font-size:42px;
+    }
+
+    .services-text{
+        font-size:18px;
+    }
+
+    .features-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+/* SMALL MOBILE */
+
+@media(max-width:576px){
+
+    .service-top-box{
+        flex-direction:column;
+        min-height:auto;
+    }
+
+    .service-title-card{
+        font-size:24px;
+    }
+
+    .service-price{
+        text-align:left;
+        min-width:auto;
+        font-size:28px;
+    }
+
+    .service-description{
+        min-height:auto;
+        font-size:16px;
+    }
+
+    .info-badge{
+        width:100%;
+        text-align:center;
+    }
+
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,616 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ service.name }}{% endblock %}
+
+{% block body %}
+
+<div class="service-page">
+
+    <div class="service-container">
+
+        <!-- BACK -->
+        <a href="{{ path('app_services') }}"
+           class="back-btn">
+
+            <i class="fas fa-arrow-left"></i>
+
+            Zurück
+
+        </a>
+
+        <!-- TOP -->
+        <div class="service-grid">
+
+            <!-- IMAGE -->
+            <div>
+
+                {% if service.imageName %}
+
+                    <img src="{{ asset('uploads/services/' ~ service.imageName) }}"
+                         class="service-image"
+                         alt="{{ service.name }}">
+
+                {% else %}
+
+                    <div class="service-placeholder">
+
+                        <i class="fas fa-image"></i>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- INFO -->
+            <div>
+
+                <span class="premium-badge">
+
+                    Premium Service
+
+                </span>
+
+                <h1 class="service-main-title">
+
+                    {{ service.name }}
+
+                </h1>
+
+                <p class="service-main-description">
+
+                    {{ service.description }}
+
+                </p>
+
+                <!-- STATS -->
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <i class="fas fa-tag"></i>
+
+                        <h6>Preis</h6>
+
+                        <strong>
+
+                            {{ service.price }} €
+
+                        </strong>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <i class="fas fa-clock"></i>
+
+                        <h6>Dauer</h6>
+
+                        <strong>
+
+                            {{ service.durationMinutes }} Min
+
+                        </strong>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <i class="fas fa-calendar"></i>
+
+                        <h6>Zeiten</h6>
+
+                        <strong>
+
+                            {{ service.timeSlots|length }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <!-- REAL BOOKING BUTTON -->
+                {% set firstAvailableSlot = null %}
+
+                {% for slot in service.timeSlots %}
+
+                    {% if slot.startTime > date() and slot.bookings|length == 0 and firstAvailableSlot == null %}
+
+                        {% set firstAvailableSlot = slot %}
+
+                    {% endif %}
+
+                {% endfor %}
+
+                {% if firstAvailableSlot %}
+
+                    <a href="{{ path('app_booking_create', {id: firstAvailableSlot.id}) }}"
+                       class="book-now-btn">
+
+                        <i class="fas fa-calendar-plus me-2"></i>
+
+                        Jetzt buchen
+
+                    </a>
+
+                {% else %}
+
+                    <button class="book-now-btn-disabled">
+
+                        Keine freien Termine
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <!-- TIME SLOTS -->
+        <div class="slots-section">
+
+            <div class="slots-top">
+
+                <div>
+
+                    <span class="section-mini-title">
+
+                        TERMINE
+
+                    </span>
+
+                    <h2 class="slots-title">
+
+                        Verfügbare Zeiten
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <!-- GRID -->
+            <div class="slots-grid">
+
+                {% for timeSlot in service.timeSlots %}
+
+                    {% if timeSlot.startTime > date() %}
+
+                        {% if timeSlot.bookings|length == 0 %}
+
+                            <!-- FREE -->
+                            <a href="{{ path('app_booking_create', {id: timeSlot.id}) }}"
+                               class="slot-card">
+
+                                <div class="slot-time">
+
+                                    {{ timeSlot.startTime|date('H:i') }}
+
+                                </div>
+
+                                <div class="slot-date">
+
+                                    {{ timeSlot.startTime|date('d.m.Y') }}
+
+                                </div>
+
+                                <div class="slot-status">
+
+                                    Frei
+
+                                </div>
+
+                            </a>
+
+                        {% else %}
+
+                            <!-- BOOKED -->
+                            <div class="slot-card-disabled">
+
+                                <div class="slot-time">
+
+                                    {{ timeSlot.startTime|date('H:i') }}
+
+                                </div>
+
+                                <div class="slot-date">
+
+                                    {{ timeSlot.startTime|date('d.m.Y') }}
+
+                                </div>
+
+                                <div class="slot-status-disabled">
+
+                                    Ausgebucht
+
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+/* GLOBAL */
+
+body{
+    background:#f7f9fc;
+    overflow-x:hidden;
+}
+
+/* PAGE */
+
+.service-page{
+    padding-top:140px;
+    padding-bottom:120px;
+}
+
+.service-container{
+    width:100%;
+    max-width:1500px;
+    margin:auto;
+    padding-left:60px;
+    padding-right:60px;
+}
+
+/* BACK */
+
+.back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+
+    background:white;
+
+    padding:16px 26px;
+
+    border-radius:18px;
+
+    color:#0f172a;
+    font-weight:700;
+
+    margin-bottom:50px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* GRID */
+
+.service-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:80px;
+    align-items:center;
+}
+
+/* IMAGE */
+
+.service-image{
+    width:100%;
+    height:700px;
+    object-fit:cover;
+    border-radius:45px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.08);
+}
+
+.service-placeholder{
+    width:100%;
+    height:700px;
+
+    border-radius:45px;
+
+    background:#eef2ff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.service-placeholder i{
+    font-size:120px;
+    color:#94a3b8;
+}
+
+/* INFO */
+
+.premium-badge{
+    background:#edf3ff;
+    color:#2563eb;
+
+    padding:14px 24px;
+
+    border-radius:50px;
+
+    font-weight:700;
+}
+
+.service-main-title{
+    font-size:78px;
+    line-height:1.05;
+    font-weight:800;
+    color:#0f172a;
+
+    margin-top:35px;
+    margin-bottom:35px;
+}
+
+.service-main-description{
+    color:#64748b;
+    line-height:1.9;
+    font-size:24px;
+
+    margin-bottom:50px;
+}
+
+/* STATS */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+
+    margin-bottom:50px;
+}
+
+.stat-card{
+    background:white;
+
+    border-radius:30px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.stat-card i{
+    font-size:30px;
+    color:#2563eb;
+    margin-bottom:18px;
+}
+
+.stat-card h6{
+    color:#64748b;
+    margin-bottom:10px;
+}
+
+.stat-card strong{
+    font-size:28px;
+    color:#0f172a;
+}
+
+/* BUTTON */
+
+.book-now-btn{
+    display:inline-flex;
+    align-items:center;
+
+    background:#2563eb;
+    color:white;
+
+    padding:22px 38px;
+
+    border-radius:20px;
+
+    font-size:20px;
+    font-weight:700;
+
+    transition:0.3s;
+}
+
+.book-now-btn:hover{
+    background:#1d4ed8;
+    color:white;
+
+    transform:translateY(-3px);
+}
+
+.book-now-btn-disabled{
+    background:#d1d5db;
+    color:#6b7280;
+    border:none;
+
+    padding:22px 38px;
+
+    border-radius:20px;
+
+    font-size:20px;
+    font-weight:700;
+}
+
+/* SLOTS */
+
+.slots-section{
+    margin-top:140px;
+}
+
+.slots-top{
+    margin-bottom:60px;
+}
+
+.section-mini-title{
+    background:#edf3ff;
+    color:#2563eb;
+
+    padding:12px 22px;
+
+    border-radius:50px;
+
+    font-size:15px;
+    font-weight:700;
+}
+
+.slots-title{
+    font-size:60px;
+    font-weight:800;
+
+    color:#0f172a;
+
+    margin-top:25px;
+}
+
+/* GRID */
+
+.slots-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:25px;
+}
+
+/* SLOT */
+
+.slot-card{
+    background:white;
+
+    border-radius:30px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+
+    transition:0.3s;
+
+    text-decoration:none;
+}
+
+.slot-card:hover{
+    background:#2563eb;
+    color:white;
+
+    transform:translateY(-5px);
+}
+
+.slot-time{
+    font-size:34px;
+    font-weight:800;
+
+    margin-bottom:12px;
+}
+
+.slot-date{
+    color:#64748b;
+    font-size:16px;
+}
+
+.slot-card:hover .slot-date{
+    color:white;
+}
+
+.slot-status{
+    margin-top:20px;
+
+    background:#dcfce7;
+    color:#166534;
+
+    padding:10px 18px;
+
+    border-radius:50px;
+
+    font-size:14px;
+    font-weight:700;
+
+    display:inline-block;
+}
+
+.slot-card:hover .slot-status{
+    background:white;
+    color:#2563eb;
+}
+
+/* DISABLED */
+
+.slot-card-disabled{
+    background:#eef1f5;
+
+    border-radius:30px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    opacity:0.7;
+}
+
+.slot-status-disabled{
+    margin-top:20px;
+
+    background:#fee2e2;
+    color:#991b1b;
+
+    padding:10px 18px;
+
+    border-radius:50px;
+
+    font-size:14px;
+    font-weight:700;
+
+    display:inline-block;
+}
+
+/* MOBILE */
+
+@media(max-width:1200px){
+
+    .service-grid{
+        grid-template-columns:1fr;
+    }
+
+    .slots-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:768px){
+
+    .service-container{
+        padding-left:20px;
+        padding-right:20px;
+    }
+
+    .service-main-title{
+        font-size:52px;
+    }
+
+    .service-main-description{
+        font-size:18px;
+    }
+
+    .stats-grid{
+        grid-template-columns:1fr;
+    }
+
+    .slots-grid{
+        grid-template-columns:1fr;
+    }
+
+    .service-image{
+        height:450px;
+    }
+
+    .slots-title{
+        font-size:42px;
+    }
+
+}
+
+</style>
+
+{% endblock %}

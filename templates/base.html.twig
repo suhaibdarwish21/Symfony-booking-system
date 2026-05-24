@@ -1,24 +1,241 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
+<html lang="de">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        {% block title %}Booking System{% endblock %}
+
+    </title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+
+        :root{
+            --primary:#2563eb;
+            --dark:#0f172a;
+            --text:#64748b;
+            --bg:#f8fafc;
+        }
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        html,
+        body{
+            width:100%;
+            overflow-x:hidden;
+        }
+
+        body{
+            background:var(--bg);
+            color:var(--dark);
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+        a{
+            text-decoration:none;
+        }
+
+        /* MAIN */
+
+        main{
+            width:100%;
+            min-height:100vh;
+        }
+
+        /* NAVBAR */
+
+        .navbar{
+            position:fixed;
+            top:0;
+            left:0;
+
+            width:100%;
+
+            z-index:999;
+
+            background:rgba(255,255,255,0.88);
+
+            backdrop-filter:blur(18px);
+
+            border-bottom:1px solid rgba(0,0,0,0.05);
+
+            padding-top:22px;
+            padding-bottom:22px;
+        }
+
+        .navbar-brand{
+            font-size:42px;
+            font-weight:800;
+            color:#0f172a !important;
+
+            display:flex;
+            align-items:center;
+            gap:18px;
+        }
+
+        .navbar-brand i{
+            width:60px;
+            height:60px;
+
+            border-radius:18px;
+
+            background:#edf3ff;
+
+            color:#2563eb;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-size:24px;
+        }
+
+        .nav-link{
+            font-size:18px;
+            font-weight:600;
+            color:#0f172a !important;
+
+            margin-left:35px;
+
+            transition:0.3s;
+        }
+
+        .nav-link:hover{
+            color:#2563eb !important;
+        }
+
+        /* BUTTONS */
+
+        .btn-login{
+            background:white;
+
+            padding:16px 26px;
+
+            border-radius:18px;
+
+            font-weight:700;
+
+            box-shadow:0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .btn-register{
+            background:#2563eb;
+            color:white !important;
+
+            padding:16px 28px;
+
+            border-radius:18px;
+
+            font-weight:700;
+        }
+
+        .btn-register:hover{
+            background:#1d4ed8;
+        }
+
+        .btn-logout{
+            background:#ef4444;
+            color:white !important;
+
+            padding:16px 28px;
+
+            border-radius:18px;
+
+            font-weight:700;
+        }
+
+        /* FOOTER */
+
+        footer{
+            background:white;
+
+            border-top:1px solid rgba(0,0,0,0.05);
+
+            padding-top:40px;
+            padding-bottom:40px;
+        }
+
+        .footer-text{
+            color:#64748b;
+        }
+
+    </style>
+
+    {% block stylesheets %}
+    {% endblock %}
+
+</head>
+
+<body>
+
+    {% include 'navbar.html.twig' %}
+
+    <main>
+
+        {% block body %}
         {% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+    </main>
 
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    <footer>
+
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+
+                    <h5 class="fw-bold mb-2">
+
+                        Booking System
+
+                    </h5>
+
+                    <div class="footer-text">
+
+                        Modernes Buchungssystem
+
+                    </div>
+
+                </div>
+
+                <div class="footer-text">
+
+                    © 2026 Booking System
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
 </html>

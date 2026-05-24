@@ -1,0 +1,961 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Meine Buchungen{% endblock %}
+
+{% block body %}
+
+<section class="bookings-page">
+
+    <div class="bookings-container">
+
+        <!-- HEADER -->
+        <div class="bookings-header">
+
+            <div class="header-left">
+
+                <div class="header-icon">
+
+                    <i class="fas fa-calendar-check"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="small-badge">
+
+                        PREMIUM DASHBOARD
+
+                    </span>
+
+                    <h1 class="bookings-title">
+
+                        Meine Buchungen
+
+                    </h1>
+
+                    <p class="bookings-subtitle">
+
+                        Verwalte deine gebuchten Services
+                        und Termine.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+
+            <!-- TOTAL -->
+            <div class="stats-card">
+
+                <div class="stats-icon blue">
+
+                    <i class="fas fa-calendar"></i>
+
+                </div>
+
+                <div class="stats-content">
+
+                    <h5>
+
+                        Gesamt Buchungen
+
+                    </h5>
+
+                    <h2>
+
+                        {{ totalBookings }}
+
+                    </h2>
+
+                    <p>
+
+                        Alle Buchungen
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- CONFIRMED -->
+            <div class="stats-card">
+
+                <div class="stats-icon green">
+
+                    <i class="fas fa-check"></i>
+
+                </div>
+
+                <div class="stats-content">
+
+                    <h5>
+
+                        Bestätigt
+
+                    </h5>
+
+                    <h2>
+
+                        {{ confirmedBookings }}
+
+                    </h2>
+
+                    <p>
+
+                        Bestätigte Termine
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- CANCELLED -->
+            <div class="stats-card">
+
+                <div class="stats-icon red">
+
+                    <i class="fas fa-times"></i>
+
+                </div>
+
+                <div class="stats-content">
+
+                    <h5>
+
+                        Storniert
+
+                    </h5>
+
+                    <h2>
+
+                        {{ cancelledBookings }}
+
+                    </h2>
+
+                    <p>
+
+                        Stornierte Termine
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ALERTS -->
+        {% for message in app.flashes('success') %}
+
+            <div class="modern-alert success-alert">
+
+                <i class="fas fa-check-circle"></i>
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+
+            <div class="modern-alert error-alert">
+
+                <i class="fas fa-exclamation-circle"></i>
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+        <!-- BOOKINGS -->
+        <div class="bookings-list">
+
+            {% for booking in bookings %}
+
+                <div class="booking-card">
+
+                    <!-- IMAGE -->
+                    <div class="booking-image-wrapper">
+
+                        {% if booking.timeSlot.service.imageName %}
+
+                            <img src="{{ asset('uploads/services/' ~ booking.timeSlot.service.imageName) }}"
+                                 class="booking-image"
+                                 alt="">
+
+                        {% else %}
+
+                            <div class="booking-placeholder">
+
+                                <i class="fas fa-image"></i>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- CONTENT -->
+                    <div class="booking-content">
+
+                        <!-- LEFT -->
+                        <div class="booking-left">
+
+                            <h3 class="booking-service">
+
+                                {{ booking.timeSlot.service.name }}
+
+                            </h3>
+
+                            <div class="booking-meta">
+
+                                <span>
+
+                                    <i class="fas fa-clock"></i>
+
+                                    {{ booking.timeSlot.service.durationMinutes }} Min
+
+                                </span>
+
+                                <span>
+
+                                    <i class="fas fa-euro-sign"></i>
+
+                                    {{ booking.timeSlot.service.price }} €
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <!-- CENTER -->
+                        <div class="booking-center">
+
+                            <div class="booking-info">
+
+                                <small>Datum</small>
+
+                                <strong>
+
+                                    {{ booking.timeSlot.startTime|date('d.m.Y') }}
+
+                                </strong>
+
+                            </div>
+
+                            <div class="booking-info">
+
+                                <small>Uhrzeit</small>
+
+                                <strong>
+
+                                    {{ booking.timeSlot.startTime|date('H:i') }}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <!-- RIGHT -->
+                        <div class="booking-right">
+
+                            {% if booking.status == 'pending' %}
+
+                                <div class="status pending">
+
+                                    <i class="fas fa-hourglass-half"></i>
+
+                                    Ausstehend
+
+                                </div>
+
+                            {% elseif booking.status == 'confirmed' %}
+
+                                <div class="status confirmed">
+
+                                    <i class="fas fa-check-circle"></i>
+
+                                    Bestätigt
+
+                                </div>
+
+                            {% elseif booking.status == 'cancelled' %}
+
+                                <div class="status cancelled">
+
+                                    <i class="fas fa-times-circle"></i>
+
+                                    Storniert
+
+                                </div>
+
+                            {% endif %}
+
+                            {% if booking.status != 'cancelled' %}
+
+                                <button class="cancel-btn"
+
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#cancelModal"
+
+                                        data-booking-id="{{ booking.id }}">
+
+                                    <i class="fas fa-trash"></i>
+
+                                    Stornieren
+
+                                </button>
+
+                            {% else %}
+
+                                <div class="cancel-info">
+
+                                    Bereits storniert
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <!-- EMPTY -->
+                <div class="empty-box">
+
+                    <i class="fas fa-bookmark"></i>
+
+                    <h3>
+
+                        Keine Buchungen vorhanden
+
+                    </h3>
+
+                    <p>
+
+                        Du hast noch keinen Service gebucht.
+
+                    </p>
+
+                    <a href="{{ path('app_services') }}"
+                       class="empty-btn">
+
+                        Services ansehen
+
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- MODAL -->
+<div class="modal fade"
+     id="cancelModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content booking-modal">
+
+            <div class="modal-header border-0">
+
+                <h5 class="fw-bold">
+
+                    Buchung stornieren
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="warning-box">
+
+                    <i class="fas fa-exclamation-triangle"></i>
+
+                    Möchtest du diese Buchung wirklich stornieren?
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer border-0">
+
+                <button type="button"
+                        class="cancel-modal-btn"
+                        data-bs-dismiss="modal">
+
+                    Abbrechen
+
+                </button>
+
+                <a id="cancelBookingBtn"
+                   href="#"
+                   class="confirm-cancel-btn">
+
+                    Ja stornieren
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+/* PAGE */
+
+.bookings-page{
+    padding-top:170px;
+    padding-bottom:120px;
+}
+
+/* CONTAINER */
+
+.bookings-container{
+    width:100%;
+    max-width:1700px;
+    margin:auto;
+    padding-left:60px;
+    padding-right:60px;
+}
+
+/* HEADER */
+
+.bookings-header{
+    margin-bottom:70px;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:35px;
+}
+
+.header-icon{
+    width:120px;
+    height:120px;
+
+    border-radius:35px;
+
+    background:#edf3ff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.header-icon i{
+    font-size:50px;
+    color:#2563eb;
+}
+
+.small-badge{
+    background:#edf3ff;
+    color:#2563eb;
+
+    padding:12px 22px;
+
+    border-radius:50px;
+
+    font-size:15px;
+    font-weight:700;
+}
+
+.bookings-title{
+    font-size:90px;
+    font-weight:800;
+
+    color:#0f172a;
+
+    margin-top:25px;
+    margin-bottom:15px;
+}
+
+.bookings-subtitle{
+    font-size:28px;
+    color:#64748b;
+}
+
+/* STATS */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:30px;
+
+    margin-bottom:50px;
+}
+
+.stats-card{
+    background:white;
+
+    border-radius:35px;
+
+    padding:35px;
+
+    display:flex;
+    align-items:center;
+    gap:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.stats-icon{
+    width:90px;
+    height:90px;
+
+    border-radius:28px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.stats-icon i{
+    font-size:34px;
+}
+
+.stats-icon.blue{
+    background:#edf3ff;
+    color:#2563eb;
+}
+
+.stats-icon.green{
+    background:#edf9f0;
+    color:#16a34a;
+}
+
+.stats-icon.red{
+    background:#fff1f1;
+    color:#dc2626;
+}
+
+.stats-content h5{
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+.stats-content h2{
+    font-size:50px;
+    font-weight:800;
+
+    margin-bottom:8px;
+}
+
+.stats-content p{
+    color:#64748b;
+}
+
+/* ALERT */
+
+.modern-alert{
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    padding:22px 28px;
+
+    border-radius:24px;
+
+    font-size:18px;
+    font-weight:600;
+
+    margin-bottom:25px;
+}
+
+.success-alert{
+    background:#edf9f0;
+    color:#166534;
+}
+
+.error-alert{
+    background:#fff1f1;
+    color:#991b1b;
+}
+
+/* BOOKINGS */
+
+.bookings-list{
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+/* CARD */
+
+.booking-card{
+    background:white;
+
+    border-radius:35px;
+
+    padding:25px;
+
+    display:flex;
+    align-items:center;
+    gap:35px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* IMAGE */
+
+.booking-image-wrapper{
+    width:260px;
+    min-width:260px;
+}
+
+.booking-image{
+    width:100%;
+    height:180px;
+
+    border-radius:25px;
+
+    object-fit:cover;
+}
+
+.booking-placeholder{
+    width:100%;
+    height:180px;
+
+    border-radius:25px;
+
+    background:#eef2ff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.booking-placeholder i{
+    font-size:60px;
+    color:#94a3b8;
+}
+
+/* CONTENT */
+
+.booking-content{
+    flex:1;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:30px;
+}
+
+/* LEFT */
+
+.booking-service{
+    font-size:42px;
+    font-weight:800;
+
+    color:#0f172a;
+
+    margin-bottom:20px;
+}
+
+.booking-meta{
+    display:flex;
+    gap:25px;
+
+    flex-wrap:wrap;
+}
+
+.booking-meta span{
+    color:#64748b;
+    font-size:18px;
+}
+
+/* CENTER */
+
+.booking-center{
+    display:flex;
+    gap:50px;
+}
+
+.booking-info{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.booking-info small{
+    color:#64748b;
+}
+
+.booking-info strong{
+    font-size:22px;
+}
+
+/* RIGHT */
+
+.booking-right{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+
+    align-items:flex-end;
+}
+
+/* STATUS */
+
+.status{
+    padding:14px 22px;
+
+    border-radius:50px;
+
+    font-weight:700;
+}
+
+.pending{
+    background:#fff8e7;
+    color:#d97706;
+}
+
+.confirmed{
+    background:#edf9f0;
+    color:#15803d;
+}
+
+.cancelled{
+    background:#fff1f1;
+    color:#dc2626;
+}
+
+/* BUTTON */
+
+.cancel-btn{
+    border:none;
+
+    background:#ef4444;
+    color:white;
+
+    padding:16px 26px;
+
+    border-radius:18px;
+
+    font-weight:700;
+
+    transition:0.3s;
+}
+
+.cancel-btn:hover{
+    background:#dc2626;
+}
+
+.cancel-info{
+    color:#94a3b8;
+    font-weight:600;
+}
+
+/* EMPTY */
+
+.empty-box{
+    background:white;
+
+    border-radius:40px;
+
+    padding:100px;
+
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.empty-box i{
+    font-size:90px;
+    color:#94a3b8;
+
+    margin-bottom:30px;
+}
+
+.empty-box h3{
+    font-size:48px;
+    font-weight:800;
+
+    margin-bottom:20px;
+}
+
+.empty-box p{
+    color:#64748b;
+    font-size:22px;
+
+    margin-bottom:35px;
+}
+
+.empty-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#2563eb;
+    color:white;
+
+    padding:22px 36px;
+
+    border-radius:20px;
+
+    font-size:18px;
+    font-weight:700;
+}
+
+/* MODAL */
+
+.booking-modal{
+    border:none;
+    border-radius:35px;
+    padding:20px;
+}
+
+.warning-box{
+    background:#fff8e7;
+    color:#d97706;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    font-size:18px;
+    font-weight:600;
+}
+
+.cancel-modal-btn{
+    border:none;
+
+    background:#eef1f5;
+
+    padding:16px 28px;
+
+    border-radius:16px;
+
+    font-weight:700;
+}
+
+.confirm-cancel-btn{
+    background:#ef4444;
+    color:white;
+
+    padding:16px 28px;
+
+    border-radius:16px;
+
+    font-weight:700;
+}
+
+/* MOBILE */
+
+@media(max-width:1400px){
+
+    .stats-grid{
+        grid-template-columns:1fr;
+    }
+
+    .booking-card{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .booking-content{
+        width:100%;
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .booking-center{
+        flex-direction:column;
+        gap:20px;
+    }
+
+    .booking-right{
+        align-items:flex-start;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .bookings-container{
+        padding-left:20px;
+        padding-right:20px;
+    }
+
+    .header-left{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .bookings-title{
+        font-size:52px;
+    }
+
+    .bookings-subtitle{
+        font-size:20px;
+    }
+
+    .booking-image-wrapper{
+        width:100%;
+        min-width:100%;
+    }
+
+    .booking-service{
+        font-size:32px;
+    }
+
+}
+
+</style>
+
+<script>
+
+const cancelModal = document.getElementById('cancelModal');
+
+if(cancelModal){
+
+    cancelModal.addEventListener('show.bs.modal', (event) => {
+
+        const bookingId =
+            event.relatedTarget.getAttribute('data-booking-id');
+
+        const cancelBtn =
+            document.getElementById('cancelBookingBtn');
+
+        cancelBtn.href =
+            '/booking/cancel/' + bookingId;
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

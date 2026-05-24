@@ -1,0 +1,809 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login - AutoCare{% endblock %}
+
+{% block body %}
+
+<section class="login-section">
+
+    <div class="container">
+
+        <div class="row align-items-center justify-content-center min-vh-100 py-5">
+
+            <!-- LEFT SIDE -->
+            <div class="col-lg-6 d-none d-lg-block">
+
+                <div class="login-left">
+
+                    <span class="premium-badge">
+
+                        PREMIUM DETAILING
+
+                    </span>
+
+                    <h1>
+
+                        Willkommen <br>
+                        zurück bei <br>
+                        AutoCare
+
+                    </h1>
+
+                    <p>
+
+                        Melden Sie sich an und verwalten Sie
+                        Ihre Buchungen schnell und einfach.
+
+                    </p>
+
+                    <div class="login-features">
+
+                        <div class="feature-box">
+
+                            <div class="feature-icon">
+
+                                <i class="fas fa-car-side"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5>Premium Services</h5>
+
+                                <p>Professionelle Fahrzeugpflege</p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="feature-box">
+
+                            <div class="feature-icon">
+
+                                <i class="fas fa-calendar-check"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5>Online Buchungen</h5>
+
+                                <p>Termine jederzeit verwalten</p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="feature-box">
+
+                            <div class="feature-icon">
+
+                                <i class="fas fa-shield-alt"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5>Sicheres System</h5>
+
+                                <p>Geschützte Anmeldung & Daten</p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="col-lg-5 col-md-8 col-sm-10">
+
+                <div class="login-card">
+
+                    <div class="login-header text-center">
+
+                        <div class="login-logo">
+
+                            <i class="fas fa-lock"></i>
+
+                        </div>
+
+                        <h2>
+
+                            Anmelden
+
+                        </h2>
+
+                        <p>
+
+                            Melden Sie sich an, um fortzufahren
+
+                        </p>
+
+                    </div>
+
+                    {% if error %}
+
+                        <div class="custom-alert">
+
+                            <i class="fas fa-exclamation-circle"></i>
+
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+
+                        </div>
+
+                    {% endif %}
+
+                    {% if app.user %}
+
+                        <div class="logged-box">
+
+                            <i class="fas fa-check-circle"></i>
+
+                            <p>
+
+                                Sie sind angemeldet als
+
+                                <strong>
+
+                                    {{ app.user.userIdentifier }}
+
+                                </strong>
+
+                            </p>
+
+                            <a href="{{ logout_path() }}" class="logout-small-btn">
+
+                                Logout
+
+                            </a>
+
+                        </div>
+
+                    {% else %}
+
+                        <form method="post" novalidate>
+
+                            <!-- EMAIL -->
+                            <div class="form-group-custom">
+
+                                <label>
+
+                                    E-Mail-Adresse
+
+                                </label>
+
+                                <div class="input-custom">
+
+                                    <i class="fas fa-envelope"></i>
+
+                                    <input
+                                        type="email"
+                                        value="{{ last_username }}"
+                                        name="email"
+                                        id="inputEmail"
+                                        class="form-control custom-input"
+                                        placeholder="example@email.com"
+                                        autocomplete="email"
+                                        required
+                                        autofocus
+                                    >
+
+                                </div>
+
+                            </div>
+
+                            <!-- PASSWORD -->
+                            <div class="form-group-custom">
+
+                                <label>
+
+                                    Passwort
+
+                                </label>
+
+                                <div class="input-custom">
+
+                                    <i class="fas fa-key"></i>
+
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        id="inputPassword"
+                                        class="form-control custom-input"
+                                        placeholder="Ihr Passwort"
+                                        autocomplete="current-password"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+                            <!-- REMEMBER -->
+                            <div class="remember-box">
+
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    name="_remember_me"
+                                    id="rememberMe"
+                                >
+
+                                <label for="rememberMe">
+
+                                    Mich merken
+
+                                </label>
+
+                            </div>
+
+                            <input
+                                type="hidden"
+                                name="_csrf_token"
+                                data-controller="csrf-protection"
+                                value="{{ csrf_token('authenticate') }}"
+                            >
+
+                            <!-- LOGIN BUTTON -->
+                            <button class="login-btn-main" type="submit">
+
+                                <i class="fas fa-sign-in-alt"></i>
+
+                                Anmelden
+
+                            </button>
+
+                        </form>
+
+                        <div class="divider">
+
+                            <span>
+
+                                ODER
+
+                            </span>
+
+                        </div>
+
+                        <a href="{{ path('app_register') }}" class="register-btn-main">
+
+                            <i class="fas fa-user-plus"></i>
+
+                            Jetzt registrieren
+
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+
+.login-section{
+
+    background: linear-gradient(
+        135deg,
+        #f8fafc 0%,
+        #eef2ff 100%
+    );
+
+    min-height: 100vh;
+
+    overflow: hidden;
+}
+
+/* LEFT */
+
+.login-left{
+
+    padding-right: 50px;
+}
+
+.premium-badge{
+
+    display: inline-block;
+
+    background: rgba(37,99,235,0.1);
+
+    color: #2563eb;
+
+    padding: 12px 22px;
+
+    border-radius: 50px;
+
+    font-weight: 700;
+
+    font-size: 14px;
+
+    margin-bottom: 25px;
+}
+
+.login-left h1{
+
+    font-size: 68px;
+
+    font-weight: 900;
+
+    line-height: 1.1;
+
+    color: #0f172a;
+
+    margin-bottom: 25px;
+}
+
+.login-left p{
+
+    font-size: 20px;
+
+    color: #64748b;
+
+    line-height: 1.8;
+
+    margin-bottom: 40px;
+}
+
+.login-features{
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+.feature-box{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 22px;
+
+    box-shadow: 0 10px 35px rgba(0,0,0,0.06);
+
+    transition: 0.3s ease;
+}
+
+.feature-box:hover{
+
+    transform: translateY(-5px);
+}
+
+.feature-icon{
+
+    width: 65px;
+
+    height: 65px;
+
+    border-radius: 18px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    font-size: 24px;
+}
+
+.feature-box h5{
+
+    font-weight: 800;
+
+    margin-bottom: 5px;
+
+    color: #0f172a;
+}
+
+.feature-box p{
+
+    margin: 0;
+
+    font-size: 15px;
+
+    color: #64748b;
+}
+
+/* CARD */
+
+.login-card{
+
+    background: white;
+
+    padding: 50px;
+
+    border-radius: 35px;
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+}
+
+.login-header{
+
+    margin-bottom: 35px;
+}
+
+.login-logo{
+
+    width: 90px;
+
+    height: 90px;
+
+    border-radius: 28px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: 0 auto 25px;
+
+    color: white;
+
+    font-size: 34px;
+
+    box-shadow: 0 15px 35px rgba(37,99,235,0.3);
+}
+
+.login-header h2{
+
+    font-size: 38px;
+
+    font-weight: 900;
+
+    color: #0f172a;
+
+    margin-bottom: 10px;
+}
+
+.login-header p{
+
+    color: #64748b;
+
+    font-size: 16px;
+}
+
+/* ALERT */
+
+.custom-alert{
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+
+    padding: 18px;
+
+    border-radius: 18px;
+
+    margin-bottom: 25px;
+
+    font-weight: 600;
+}
+
+/* LOGGED */
+
+.logged-box{
+
+    text-align: center;
+}
+
+.logged-box i{
+
+    font-size: 60px;
+
+    color: #22c55e;
+
+    margin-bottom: 20px;
+}
+
+.logged-box p{
+
+    color: #475569;
+
+    margin-bottom: 20px;
+}
+
+.logout-small-btn{
+
+    display: inline-block;
+
+    background: #ef4444;
+
+    color: white;
+
+    padding: 12px 25px;
+
+    border-radius: 14px;
+
+    text-decoration: none;
+
+    font-weight: 700;
+}
+
+/* INPUTS */
+
+.form-group-custom{
+
+    margin-bottom: 25px;
+}
+
+.form-group-custom label{
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-weight: 700;
+
+    color: #0f172a;
+}
+
+.input-custom{
+
+    position: relative;
+}
+
+.input-custom i{
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 20px;
+
+    transform: translateY(-50%);
+
+    color: #2563eb;
+
+    font-size: 16px;
+}
+
+.custom-input{
+
+    height: 60px;
+
+    border-radius: 18px;
+
+    border: 2px solid #e2e8f0;
+
+    padding-left: 55px;
+
+    font-size: 16px;
+
+    transition: 0.3s ease;
+
+    box-shadow: none;
+}
+
+.custom-input:focus{
+
+    border-color: #2563eb;
+
+    box-shadow: 0 0 0 5px rgba(37,99,235,0.12);
+}
+
+/* REMEMBER */
+
+.remember-box{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 25px;
+}
+
+.remember-box label{
+
+    color: #64748b;
+}
+
+/* BUTTON */
+
+.login-btn-main{
+
+    width: 100%;
+
+    height: 60px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+    transition: 0.3s ease;
+
+    box-shadow: 0 15px 35px rgba(37,99,235,0.3);
+}
+
+.login-btn-main:hover{
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 20px 40px rgba(37,99,235,0.4);
+}
+
+/* DIVIDER */
+
+.divider{
+
+    text-align: center;
+
+    margin: 30px 0;
+
+    position: relative;
+}
+
+.divider::before{
+
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 1px;
+
+    background: #e2e8f0;
+}
+
+.divider span{
+
+    background: white;
+
+    position: relative;
+
+    padding: 0 15px;
+
+    color: #94a3b8;
+
+    font-weight: 700;
+}
+
+/* REGISTER BTN */
+
+.register-btn-main{
+
+    width: 100%;
+
+    height: 58px;
+
+    border-radius: 18px;
+
+    border: 2px solid #2563eb;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    text-decoration: none;
+
+    color: #2563eb;
+
+    font-weight: 800;
+
+    transition: 0.3s ease;
+}
+
+.register-btn-main:hover{
+
+    background: #2563eb;
+
+    color: white;
+}
+
+/* MOBILE */
+
+@media(max-width: 991px){
+
+    .login-card{
+
+        padding: 35px 25px;
+    }
+
+    .login-header h2{
+
+        font-size: 30px;
+    }
+}
+
+@media(max-width: 576px){
+
+    .login-section{
+
+        padding: 30px 10px;
+    }
+
+    .login-card{
+
+        border-radius: 25px;
+
+        padding: 30px 20px;
+    }
+
+    .login-logo{
+
+        width: 75px;
+
+        height: 75px;
+
+        font-size: 28px;
+    }
+
+    .login-header h2{
+
+        font-size: 26px;
+    }
+
+    .custom-input{
+
+        height: 55px;
+    }
+
+    .login-btn-main{
+
+        height: 55px;
+    }
+
+    .register-btn-main{
+
+        height: 55px;
+    }
+}
+
+</style>
+
+{% endblock %}
